@@ -5,6 +5,7 @@ import json
 from cryptography.fernet import Fernet
 import time
 
+
 # Initialize session state for persistent storage across reruns
 if "stored_data" not in st.session_state:
     st.session_state.stored_data = {}
@@ -16,7 +17,7 @@ KEY_FILE = "encryption_key.key"
 if os.path.exists(KEY_FILE):  # if key file exist in folder
     with open(KEY_FILE, "rb") as key_file:
         KEY = key_file.read()
-else:
+else:  # if not exist
     KEY = Fernet.generate_key()
     with open(KEY_FILE, "wb") as key_file:
         key_file.write(KEY)
@@ -30,7 +31,7 @@ def hash_passkey(passkey):
 
 
 # Function to encrypt data
-def encrypt_data(text, passkey):
+def encrypt_data(text):
     return cipher.encrypt(text.encode()).decode()
 
 
@@ -38,7 +39,7 @@ def encrypt_data(text, passkey):
 def decrypt_data(encrypted_text, passkey):
     hashed_passkey = hash_passkey(passkey)
 
-    for key, value in st.session_state.stored_data.items():
+    for _, value in st.session_state.stored_data.items():
         if (
             value["encrypted_text"] == encrypted_text
             and value["passkey"] == hashed_passkey
@@ -55,7 +56,6 @@ st.title("🔒 Secure Data Encryption System")
 
 # Navigation
 menu = ["Home", "Store Data", "Retrieve Data", "Login"]
-# choice = st.sidebar.selectbox("Navigation", menu, key= "navigation_menu")
 
 # using session state to update the page if the failed attempts reach to 3
 # initializing page
@@ -84,7 +84,7 @@ elif choice == "Store Data":
     if st.button("Encrypt & Save"):
         if user_data and passkey:
             hashed_passkey = hash_passkey(passkey)
-            encrypted_text = encrypt_data(user_data, passkey)
+            encrypted_text = encrypt_data(user_data)
             st.session_state.stored_data[encrypted_text] = {
                 "encrypted_text": encrypted_text,
                 "passkey": hashed_passkey,
