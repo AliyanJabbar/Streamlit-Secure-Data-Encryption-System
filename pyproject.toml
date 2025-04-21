@@ -1,14 +1,10 @@
-[tool.poetry]
-name = "streamlit-secure-data-encryption-system"
+[project]
+name = "streamlit-password-strength-meter"
 version = "0.1.0"
-description = "A secure data encryption system"
-authors = ["Aliyan Jabbar jabbaraliyan805@gmail.com"]
-
-[tool.poetry.dependencies]
-python = "^3.8"
-streamlit = "^1.0.0"
-cryptography = "^39.0.0"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "streamlit>=1.43.2",
+    cryptography = "^39.0.0"
+]
